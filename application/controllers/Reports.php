@@ -668,11 +668,9 @@ class Reports extends CI_Controller {
 								array('data' =>'MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
 								array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
 								array('data' =>'TEAMS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'STUDENTS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'COMPLETED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff')
+								array('data' =>'IDEA SUBMISSION STATUS', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+								array('data' =>'IDEA SUBMITTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+								array('data' =>'NOT SUBMITTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff')
 							);
 			$i=1; $total = 0;
 			foreach ($res as $res1){
@@ -691,98 +689,37 @@ class Reports extends CI_Controller {
 					if($getTeamsCount){
 						if($getTeamsCount->count){
 							$teams_count = $getTeamsCount->count;
+							// GET IDEAS SUBMITTED COUNT
+							$ideas_submitted_count = $this->data_model->getIdeasCount($mentor_id)->row()->count;		
+							$ideas_not_submitted_count = $teams_count - $ideas_submitted_count;
+							if($teams_count == $ideas_submitted_count){								
+								$ideas_status = array('data' => "COMPLETED 🟢",'style'=>'background-color:#4CAF50; color:#000');
+							}else{
+								$ideas_status = array('data' => "IN PROGRESS 🟡",'style'=>'background-color:#FFF176; color:#000');
+							}
 						}else{
 							$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');	
+							$ideas_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+							$ideas_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+							$ideas_not_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 						}
 					}else{
 						$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-					}
-
-					// STUDENTS COUNT
-					$getStudentsCount = $this->data_model->getStudentsCount($mentor_id)->row();
-					if($getStudentsCount){
-						if($getStudentsCount->count){
-							$students_count = $getStudentsCount->count;
-							$students_count1 = $getStudentsCount->count;
-						}else{
-							$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');	
-							$students_count1 = 0;
-						}
-					}else{
-						$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						$students_count1 = 0;
-					}
-
-					// STUDENTS PRE SURVEY COUNT
-					$getStudentsLessonsCount = $this->data_model->getStudentsLessonsCount($mentor_id)->result();
-					if($getStudentsLessonsCount){
-						$started = count($getStudentsLessonsCount);
-						$not_started = $students_count1 - $started;
-						$completed = 0; $inprogress = 0; 
-						foreach($getStudentsLessonsCount as $getStudentsLessonsCount1){
-							if($getStudentsLessonsCount1->count == 35){
-								$completed++;
-							}else{
-								$inprogress++;
-							}
-						}
-							if($students_count1 == $completed){
-								$lessons_status = array('data' => "COMPLETED 🟢",'style'=>'background-color:#4CAF50; color:#000');
-							}else{
-								$lessons_status = array('data' => "IN PROGRESS 🟡",'style'=>'background-color:#FFF176; color:#000');
-							}
-						
-						if($completed){
-							$lessons_completed_count = array('data' => $completed);
-						}else{
-							$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						}
-
-						if($inprogress){
-							$lessons_in_progress_count = array('data' => $inprogress);
-						}else{
-							$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						}
-						
-						if($not_started){
-							$lessons_not_started_count = array('data' => $not_started);
-						}else{
-							$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						}
-
-					}else{
-												
-						$lessons_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
-						$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						if($students_count1){
-							$lessons_not_started_count = array('data' => $students_count1);
-						}else{
-							$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-						}
-						
-					}
+						$ideas_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_not_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					}					 
 					
 				}else{
-					// $teacher_name = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
-					// $mobile = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
-					// $email = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
-					// $teams_count = array('data' => 0,'style'=>'background-color:#F4511E; color:#000');
-					// $students_count = array('data' => 0,'style'=>'background-color:#F4511E; color:#000');
-					// $lessons_status = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
-					// $lessons_completed_count = array('data' => 0);
-					// $lessons_in_progress_count = array('data' => 0);
-					// $lessons_not_started_count = array('data' => 0);
-
+					
 					$teacher_name = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$mobile = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$email = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-					$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-					$lessons_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
-					$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-					$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
-					$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_not_submitted_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					// $lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 				}
 				
 				$principal_name = ($res1->principal_name) ? $res1->principal_name : $res1->organization_name;
@@ -798,17 +735,14 @@ class Reports extends CI_Controller {
 						$mobile,
 						$email,
 						$teams_count,
-						$students_count,
-						$lessons_status,
-						$lessons_completed_count,
-						$lessons_in_progress_count,
-						$lessons_not_started_count
+						$ideas_status,
+						$ideas_submitted_count,
+						$ideas_not_submitted_count
 
 				);
 			}
 			
-			echo $detailsTable = $this->table->generate();
-			die;
+			$detailsTable = $this->table->generate();
 			$response =  array('op' => 'ok',
                  'file' => "data:application/vnd.ms-excel;base64,".base64_encode($detailsTable)
                  );

@@ -125,6 +125,18 @@ Class Data_model extends CI_Model
   return $this->db->get('mentor_topic_progress');
  }
  
+//  SELECT challenge_responses.team_id, mentors.mentor_id, teams.team_name
+//  FROM unisolve_db.challenge_responses, unisolve_db.teams, unisolve_db.mentors
+//  where challenge_responses.team_id = teams.team_id and mentors.mentor_id = teams.mentor_id and mentors.mentor_id in (760);
+
+ function getIdeasCount($mentor_id){
+  $this->db->select('count(challenge_responses.team_id) as count');
+  $this->db->join('teams', 'teams.team_id = challenge_responses.team_id');
+  $this->db->join('mentors', 'mentors.mentor_id = teams.mentor_id');
+  $this->db->where('mentors.mentor_id', $mentor_id);
+  return $this->db->get('challenge_responses');
+ }
+
  function studentDataCheck($reg_no)
  {
     $this -> db -> select('id, reg_no, mobile, personal_email, father_mobile');
