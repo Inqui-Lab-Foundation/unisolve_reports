@@ -482,6 +482,21 @@ class Reports extends CI_Controller {
 	}
 
 	function studentLessons(){
+		// $mentor_id = 4208;
+		// $ideas_res = $this->data_model->getIdeasCount($mentor_id)->result();
+		// $ideas_draft = 0; $ideas_submitted = 0;
+		// foreach($ideas_res as $ideas_res1){
+		// 	if($ideas_res1->status == "DRAFT"){
+		// 		$ideas_draft = $ideas_res1->count;
+		// 	}
+		// 	if($ideas_res1->status == "SUBMITTED"){
+		// 		$ideas_submitted = $ideas_res1->count;
+		// 	}
+		// }
+		// echo $ideas_draft;
+		// echo $ideas_submitted;
+		// print_r($ideas_res);
+		// die;
 		$district = $this->input->post('district');
 		if($district){
 			$data['page_title'] = $district.' - Student PreSurvey Status';
@@ -501,10 +516,14 @@ class Reports extends CI_Controller {
 								array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
 								array('data' =>'TEAMS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 								array('data' =>'STUDENTS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'COMPLETED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff')
+								array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+								array('data' =>'COMPLETED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+								array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+								array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+								array('data' =>'IDEAS SUBMISSION STATUS', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+								array('data' =>'IDEAS SUBMITTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+								array('data' =>'IDEAS DRAFT COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+								array('data' =>'IDEAS NOT STARTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff')
 							);
 			$i=1; $total = 0;
 			foreach ($res as $res1){
@@ -523,11 +542,38 @@ class Reports extends CI_Controller {
 					if($getTeamsCount){
 						if($getTeamsCount->count){
 							$teams_count = $getTeamsCount->count;
+							
+							// IDEAS STATUS
+							$ideas_res = $this->data_model->getIdeasCount($mentor_id)->result();
+							$ideas_draft = 0; $ideas_submitted = 0;
+							foreach($ideas_res as $ideas_res1){
+								if($ideas_res1->status == "DRAFT"){
+									$ideas_draft = $ideas_res1->count;
+								}
+								if($ideas_res1->status == "SUBMITTED"){
+									$ideas_submitted = $ideas_res1->count;
+								}
+							}
+							$ideas_not_started = $teams_count - ($ideas_draft + $ideas_submitted);
+							if($teams_count == $ideas_submitted){								
+								$ideas_status = array('data' => "COMPLETED 🟢",'style'=>'background-color:#4CAF50; color:#000');
+							}else{
+								$ideas_status = array('data' => "IN PROGRESS 🟡",'style'=>'background-color:#FFF176; color:#000');
+							}
+
 						}else{
 							$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');	
+							$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+							$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+							$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+							$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 						}
 					}else{
 						$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+						$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 					}
 
 					// STUDENTS COUNT
@@ -594,6 +640,8 @@ class Reports extends CI_Controller {
 						}
 						
 					}
+
+					
 					
 				}else{
 					// $teacher_name = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
@@ -615,6 +663,10 @@ class Reports extends CI_Controller {
 					$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 				}
 				
 				$principal_name = ($res1->principal_name) ? $res1->principal_name : $res1->organization_name;
@@ -634,8 +686,11 @@ class Reports extends CI_Controller {
 						$lessons_status,
 						$lessons_completed_count,
 						$lessons_in_progress_count,
-						$lessons_not_started_count
-
+						$lessons_not_started_count,
+						$ideas_status,
+						$ideas_submitted,
+						$ideas_draft,
+						$ideas_not_started
 				);
 			}
 			

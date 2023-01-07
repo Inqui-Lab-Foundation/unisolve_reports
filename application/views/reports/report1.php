@@ -21,8 +21,8 @@
                                         <th width="5%">No. of Institutions </th>
                                         <th width="15%">Teachers Status</th>
                                         <th width="15%">Student PreSurvey Status</th>
-                                        <th width="15%">Student Lessons Status</th>
-                                        <th width="15%">Idea Submission Status</th>
+                                        <th width="20%">Student Lessons & Idea Status</th>
+                                        <!-- <th width="15%">Idea Submission Status</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -38,7 +38,7 @@
                                         // echo "<td>".anchor('reports/studentPreSurvey/'.$res1->district,'Download','class="btn btn-danger btn-xs"')."</td>";
                                         echo "<td><button type='button' name='studentsPreSurvey_btn_".$i."' id='studentsPreSurvey_btn' value='".$res1->district."' class='studentsPreSurvey_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         echo "<td><button type='button' name='studentLessonsStatus_btn_".$i."' id='studentLessonsStatus_btn' value='".$res1->district."' class='studentLessonsStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
-                                        echo "<td><button type='button' name='studentIdeasStatus_btn_".$i."' id='studentIdeasStatus_btn' value='".$res1->district."' class='studentIdeasStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
+                                        // echo "<td><button type='button' name='studentIdeasStatus_btn_".$i."' id='studentIdeasStatus_btn' value='".$res1->district."' class='studentIdeasStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         echo "</tr>";
 
                                         $total = $res1->cnt + $total;

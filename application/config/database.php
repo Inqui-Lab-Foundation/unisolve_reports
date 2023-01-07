@@ -70,15 +70,85 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'default';
+$active_group = 'tn';
 $query_builder = TRUE;
 
-$db['default'] = array(
+// TAMILNADU
+$db['tn'] = array(
 	'dsn'	=> '',
-	'hostname' => 'unisolvedbuser-instance-1-ap-south-1a.c6jjgemjnht8.ap-south-1.rds.amazonaws.com',
+	'hostname' => 'latest-tn-prod-cluster.cluster-c6jjgemjnht8.ap-south-1.rds.amazonaws.com',
 	// 'hostname' => 'tn-prod-db-sls.cluster-c6jjgemjnht8.ap-south-1.rds.amazonaws.com',
 	'username' => 'admin',
 	'password' => 'XuouUrjQZsktuNnqz9IA',
+	'database' => 'unisolve_db',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// ANDHRA PRADESH
+$db['ap'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ap-prod-sls.cluster-cqoi4lptoyda.ap-south-1.rds.amazonaws.com',
+	'username' => 'dbmasteruser',
+	'password' => 'Jd6GGUlQ0lfhzGyx4drt',
+	'database' => 'unisolve_db',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// TELANGANA
+$db['ts'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ts-prod-db.cluster-cu3xvze3edd7.ap-south-1.rds.amazonaws.com',
+	'username' => 'dbmasteruser',
+	'password' => '367BoRXDGykrSIDVEPh2',
+	'database' => 'unisolve_db',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// KARNATAKA
+$db['ka'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ka-prod-db.cluster-ro-chmvurkvqofo.ap-south-1.rds.amazonaws.com',
+	'username' => 'dbmasteruser',
+	'password' => 'nPfTB2S6MgjPupRaxyDN',
 	'database' => 'unisolve_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
