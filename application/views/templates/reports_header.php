@@ -83,7 +83,7 @@
                             </span>
                         </div>
                      </div>                                                  
-                    <?=form_close();?> 
+                    <!-- <?=form_close();?>  -->
                     <!-- END Search Form -->
                 </div>
                 <!-- END Left Section -->
