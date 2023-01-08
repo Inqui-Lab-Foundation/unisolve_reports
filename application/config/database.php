@@ -70,8 +70,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'tn';
+
+$instance = ChkDB();
+$instance = isset($instance) ? $instance : 'tn';
+$active_group = $instance;
 $query_builder = TRUE;
+
 
 // TAMILNADU
 $db['tn'] = array(
@@ -165,3 +169,50 @@ $db['ka'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+// KARNATAKA
+$db['bhtn'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ka-prod-db.cluster-ro-chmvurkvqofo.ap-south-1.rds.amazonaws.com',
+	'username' => 'dbmasteruser',
+	'password' => 'nPfTB2S6MgjPupRaxyDN',
+	'database' => 'unisolve_db',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// MALDIVES
+$db['mldv'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ka-prod-db.cluster-ro-chmvurkvqofo.ap-south-1.rds.amazonaws.com',
+	'username' => 'dbmasteruser',
+	'password' => 'nPfTB2S6MgjPupRaxyDN',
+	'database' => 'unisolve_db',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+

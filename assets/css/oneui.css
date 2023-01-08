@@ -29897,3 +29897,12 @@ input[type='radio']:checked~label {
 .login_logo{
   width: 200px;
 }
+
+.instanceDiv{
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.instanceDiv:hover{
+
+}

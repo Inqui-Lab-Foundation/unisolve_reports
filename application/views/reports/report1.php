@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="block shadow block-bordered">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">TAMIL NADU DISTRICTS</h3>
+                        <h3 class="block-title"><?=$instances[$instance].' '.$page_title;?></h3>
                     </div>
                     <div class="block-content">
                         <div id="districts_list">
@@ -73,16 +73,18 @@ $(document).ready(function() {
 
     var d = new Date();
     // var month = d.getMonth()+1;
-    var month = d.toLocaleString('default', { month: 'short' });
+    var month = d.toLocaleString('default', {
+        month: 'short'
+    });
     var day = d.getDate();
-    var output =  ((''+day).length<2 ? '0' : '') + day + '_' + ((''+month).length<2 ? '0' : '') + month;
- 
+    var output = (('' + day).length < 2 ? '0' : '') + day + '_' + (('' + month).length < 2 ? '0' : '') + month;
+
     $('#error').hide();
     $('#fee_details').prop('disabled', true);
 
     $('button[class^="teachersStatus_btn"]').click(function() {
         var district = $(this).attr('value');
-       
+
         if (district) {
             $("#districts_list").hide();
             $("#process").show();
@@ -116,7 +118,7 @@ $(document).ready(function() {
 
     $('button[class^="studentsPreSurvey_btn"]').click(function() {
         var district = $(this).attr('value');
-       
+
         if (district) {
             $("#districts_list").hide();
             $("#process").show();
@@ -150,7 +152,7 @@ $(document).ready(function() {
 
     $('button[class^="studentLessonsStatus_btn"]').click(function() {
         var district = $(this).attr('value');
-       
+
         if (district) {
             $("#districts_list").hide();
             $("#process").show();
@@ -166,7 +168,7 @@ $(document).ready(function() {
                 'cache': false,
                 'success': function(data) {
                     // console.log(data);die;
-                    var fileName = district+"_SIDP_Status_"+output+".xls";
+                    var fileName = district + "_SIDP_Status_" + output + ".xls";
                     var $a = $("<a>");
                     $a.attr("href", data.file);
                     $("body").append($a);
@@ -184,7 +186,7 @@ $(document).ready(function() {
 
     $('button[class^="studentIdeasStatus_btn"]').click(function() {
         var district = $(this).attr('value');
-       
+
         if (district) {
             $("#districts_list").hide();
             $("#process").show();
@@ -200,7 +202,8 @@ $(document).ready(function() {
                 'cache': false,
                 'success': function(data) {
                     // console.log(data);die;
-                    var fileName = district+"_SIDP_Ideas_Submission_Status_"+output+".xls";
+                    var fileName = district + "_SIDP_Ideas_Submission_Status_" + output +
+                        ".xls";
                     var $a = $("<a>");
                     $a.attr("href", data.file);
                     $("body").append($a);

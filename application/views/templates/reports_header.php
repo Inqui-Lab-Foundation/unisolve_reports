@@ -40,6 +40,8 @@
 
         <!-- Header -->
         <header id="page-header">
+
+        <?php if(isset($instance)){ ?>
             <!-- Header Content -->
             <div class="content-header">
                 <!-- Left Section -->
@@ -55,20 +57,23 @@
                     <!-- Toggle Mini Sidebar -->
                     <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
                     <button type="button" class="btn btn-sm btn-dual mr-2 d-none d-lg-inline-block" data-toggle="layout">
-                        <a href="https://tn.unisolve.org/" target="_blank"><i class="fa fa-fw fa-globe"></i></a>
+                        <?php
+                            $instancesLive = array(" " => "") + $this->globals->instancesLive();
+                        ?>
+                        <a href=<?=$instancesLive[$instance]; ?> target="_blank"><i class="fa fa-fw fa-globe"></i></a>
                     </button>
                     <!-- END Toggle Mini Sidebar -->
 
                     <!-- Open Search Section (visible on smaller screens) -->
                     <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                    <button type="button" class="btn btn-sm btn-dual d-md-none" data-toggle="layout"
+                    <!-- <button type="button" class="btn btn-sm btn-dual d-md-none" data-toggle="layout"
                         data-action="header_search_on">
                         <i class="fa fa-fw fa-search"></i>
-                    </button>
+                    </button> -->
                     <!-- END Open Search Section -->
 
                     <!-- Search Form (visible on larger screens) -->
-                    <?=form_open('reports/search','name="form" novalidate class="d-none d-md-inline-block form-horizontal" method="post"');?>
+                    <!-- <?=form_open('reports/search','name="form" novalidate class="d-none d-md-inline-block form-horizontal" method="post"');?>
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control form-control-alt" placeholder="Search by DISE Code" id="search"
                             name="search">
@@ -77,16 +82,20 @@
                                 <i class="fa fa-fw fa-search"></i>
                             </span>
                         </div>
-                    </div>
-                    <?=form_close();?>
+                     </div>                                                  
+                    <?=form_close();?> 
                     <!-- END Search Form -->
                 </div>
                 <!-- END Left Section -->
 
                 <!-- Right Section -->
                 <div class="d-flex align-items-center">
+                    <?php
+                        echo anchor('reports','ALL INSTANCES','class="btn btn-danger btn-sm"');
+                    ?>
+
                     <!-- User Dropdown -->
-                    <div class="dropdown d-inline-block ml-2">
+                    <!-- <div class=zzzzzzzzz"dropdown d-inline-block ml-2">
                         <button type="button" class="btn btn-sm btn-dual d-flex align-items-center"
                             id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -107,26 +116,27 @@
                                 <?php
                                         echo anchor('admin/logout','<span class="font-size-sm font-w500">Logout</span>','class="dropdown-item d-flex align-items-center justify-content-between"');
                                     ?>
-                                <!--<a class="dropdown-item d-flex align-items-center justify-content-between" href="be_pages_generic_profile.html">-->
-                                <!--    <span class="font-size-sm font-w500">Profile</span>-->
-                                <!--    <span class="badge badge-pill badge-primary ml-2">1</span>-->
-                                <!--</a>-->
-                                <!--<a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">-->
-                                <!--    <span class="font-size-sm font-w500">Settings</span>-->
-                                <!--</a>-->
-                                <!--<div role="separator" class="dropdown-divider"></div>-->
-                                <!--<a class="dropdown-item d-flex align-items-center justify-content-between" href="op_auth_signin.html">-->
-                                <!--    <span class="font-size-sm font-w500">Log Out</span>-->
-                                <!--</a>-->
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="be_pages_generic_profile.html">
+                                   <span class="font-size-sm font-w500">Profile</span>
+                                   <span class="badge badge-pill badge-primary ml-2">1</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                   <span class="font-size-sm font-w500">Settings</span>
+                                </a>
+                                <div role="separator" class="dropdown-divider"></div>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="op_auth_signin.html">
+                                   <span class="font-size-sm font-w500">Log Out</span>
+                                </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- END User Dropdown -->
 
                 </div>
                 <!-- END Right Section -->
             </div>
             <!-- END Header Content -->
+        <?php } ?>
 
         </header>
         <!-- END Header -->

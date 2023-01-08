@@ -86,8 +86,56 @@ class Reports extends CI_Controller {
 			redirect('admin/timeout');
 		}
 	}
-    
-    function index(){
+
+    function reset(){
+		$this->session->unset_userdata('instance');
+		session_destroy();
+		redirect('reports/index', 'refresh');
+	}
+
+	function index(){
+		$this->session->unset_userdata('instance');
+		session_destroy();
+		// redirect('reports/index', 'refresh');
+
+		$this->reports_template->show('reports/index');
+	}
+
+	function setInstance($instance){
+		$this->session->set_userdata('instance', $instance);
+		redirect('reports/instanceHome', 'refresh');
+	}
+
+	function instanceHome(){
+		if ($this->session->userdata('instance')){
+			$data['instance'] = $this->session->userdata('instance');
+			
+			$data['page_title'] = 'Dashboard';		 
+			$data['res'] = $this->data_model->getDistricts()->result();
+
+			$data['instances'] = array(" " => "") + $this->globals->instances();
+			$data['instancesLive'] = array(" " => "") + $this->globals->instancesLive();
+			
+			$this->reports_template->show('reports/report1',$data);
+
+		}else {
+			redirect('reports');
+		}
+	}
+
+    function index2(){
+		$instance = "tn";
+		$this->session->set_userdata('instance', $instance);
+		print_r($instance);
+		
+		if ($this->session->userdata()){
+			$instance = $this->session->userdata();
+			print_r($instance['instance']);
+		}else{
+			echo "No Session";
+		}
+			// $sess = $this->session->userdata('admin_logs');
+		  die;
 			$data['page_title'] = 'Dashboard';		 
 			$data['res'] = $this->data_model->getDistricts()->result();
 			$this->reports_template->show('reports/report1',$data);

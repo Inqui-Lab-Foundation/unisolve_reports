@@ -3,14 +3,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Globals {
 
-    public function colleges(){
-       return array('ndc' => 'NDC',
-                    'ncet' => 'NCET',
-                    'ncms' => 'NCMS',
-                    'pucyel' => 'PUC-YEL',
-                    'puccvp' => 'PUC-CVP'
+    public function instances(){
+       return array('tn' => 'TAMIL NADU',
+                    'ka' => 'KARNATAKA',
+                    'ts' => 'TELANGANA',
+                    'ap' => 'ANDHRA PRADESH',
+                    'mldv' => 'MALDIVES',
+                    'bhtn' => 'BHUTAN'
         );
     }
+
+    public function instancesLive(){
+        return array('tn' => 'https://tn.unisolve.org/',
+                     'ka' => 'https://ka.unisolve.org/',
+                     'ts' => 'https://ts.unisolve.org/',
+                     'ap' => 'https://ap.unisolve.org/',
+                     'mldv' => 'https://mldv.unisolve.org/',
+                     'bhtn' => 'https://bhtn.unisolve.org/'
+         );
+     }
 
     public function userRoles(){
         return array('1' => 'Super Admin',
