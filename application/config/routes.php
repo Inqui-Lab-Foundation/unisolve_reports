@@ -52,13 +52,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'reports/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
-$route['admin'] = 'admin/index';
-$route['admin/invalid'] = 'admin/index';
-$route['admin/timeout'] = 'admin/index';
-$route['admin/logout-success'] = 'admin/index';
-
-$route['student'] = 'student/login';
-$route['student/invalid'] = 'student/login';
-$route['student/timeout'] = 'student/login';
-$route['student/logout-success'] = 'student/login';
