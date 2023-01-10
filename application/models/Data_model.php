@@ -85,6 +85,8 @@ Class Data_model extends CI_Model
   $instance = $this->session->userdata('instance');
   if($instance == 'ka'){
     $this->db->select('organizations.organization_code, organizations.category, organizations.block_name, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }else if($instance == 'ts'){
+    $this->db->select('organizations.organization_code, organizations.district, organizations.org_type, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
   }else{
     $this->db->select('organizations.organization_code, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
   }

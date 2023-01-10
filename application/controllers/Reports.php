@@ -565,6 +565,10 @@ class Reports extends CI_Controller {
 				array_push($set_heading, array('data' =>'CATEGORY', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
 				array_push($set_heading, array('data' =>'BLOCK', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
 			}
+
+			if($instance == "ts"){
+				array_push($set_heading, array('data' =>'ORG TYPE', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+			}
 			 
 			$set_heading1 = array(
 				array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
@@ -737,6 +741,9 @@ class Reports extends CI_Controller {
 				if($instance == 'ka'){
 					array_push($add_row, $res1->category);
 					array_push($add_row, $res1->block_name);
+				}
+				if($instance == 'ts'){
+					array_push($add_row, $res1->org_type);
 				}
 				$add_other_fields = array($res1->organization_name,
 										$principal_name,
