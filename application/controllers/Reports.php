@@ -550,30 +550,42 @@ class Reports extends CI_Controller {
 		if($district){
 			$data['page_title'] = $district.' - Student PreSurvey Status';
 			$res = $this->data_model->getInstitutionsList($district)->result();
-			 
+		 
+			$instance = $this->session->userdata('instance');
 			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
 			$this->table->set_template($table_setup);
-			$this->table->set_heading(
+
+			$set_heading = array(
 								array('data' =>'S.No', 'style'=>'width:50;background-color:#002060; color:#fff'),
 								array('data' =>'UDISE CODE', 'style'=>'width:200;background-color:#002060; color:#fff'),
-								array('data' =>'DISTRICT', 'style'=>'width:200;background-color:#002060; color:#fff'),
-								array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
-								array('data' =>'HM NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
-								array('data' =>'HM MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
-								array('data' =>'TEACHER NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
-								array('data' =>'MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
-								array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
-								array('data' =>'TEAMS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'STUDENTS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
-								array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
-								array('data' =>'COMPLETED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
-								array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
-								array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
-								array('data' =>'IDEAS SUBMISSION STATUS', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
-								array('data' =>'IDEAS SUBMITTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
-								array('data' =>'IDEAS DRAFT COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
-								array('data' =>'IDEAS NOT STARTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff')
+								array('data' =>'DISTRICT', 'style'=>'width:200;background-color:#002060; color:#fff')
 							);
+
+			if($instance == "ka"){
+				array_push($set_heading, array('data' =>'CATEGORY', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+				array_push($set_heading, array('data' =>'BLOCK', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+			}
+			 
+			$set_heading1 = array(
+				array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
+				array('data' =>'HM NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'HM MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+				array('data' =>'TEACHER NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+				array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'TEAMS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'STUDENTS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'COMPLETED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'IDEAS SUBMISSION STATUS', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				array('data' =>'IDEAS SUBMITTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				array('data' =>'IDEAS DRAFT COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				array('data' =>'IDEAS NOT STARTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff')
+			);
+			$set_heading = array_merge($set_heading, $set_heading1);
+			$this->table->set_heading($set_heading);
 			$i=1; $total = 0;
 			foreach ($res as $res1){
 				
@@ -721,26 +733,29 @@ class Reports extends CI_Controller {
 				$principal_name = ($res1->principal_name) ? $res1->principal_name : $res1->organization_name;
 				$principal_mobile = ($res1->principal_mobile) ? $res1->principal_mobile : 0;
 
-				$this->table->add_row($i++,
-						$res1->organization_code,
-						$res1->district,
-						$res1->organization_name,
-						$principal_name,
-						$principal_mobile,
-						$teacher_name,
-						$mobile,
-						$email,
-						$teams_count,
-						$students_count,
-						$lessons_status,
-						$lessons_completed_count,
-						$lessons_in_progress_count,
-						$lessons_not_started_count,
-						$ideas_status,
-						$ideas_submitted,
-						$ideas_draft,
-						$ideas_not_started
-				);
+				$add_row = array($i++,$res1->organization_code,$res1->district);
+				if($instance == 'ka'){
+					array_push($add_row, $res1->category);
+					array_push($add_row, $res1->block_name);
+				}
+				$add_other_fields = array($res1->organization_name,
+										$principal_name,
+										$principal_mobile,
+										$teacher_name,
+										$mobile,
+										$email,
+										$teams_count,
+										$students_count,
+										$lessons_status,
+										$lessons_completed_count,
+										$lessons_in_progress_count,
+										$lessons_not_started_count,
+										$ideas_status,
+										$ideas_submitted,
+										$ideas_draft,
+										$ideas_not_started);
+				$add_row = array_merge($add_row, $add_other_fields);
+				$this->table->add_row($add_row);
 			}
 			
 			$detailsTable = $this->table->generate();
@@ -758,11 +773,10 @@ class Reports extends CI_Controller {
 		if($district){
 			$data['page_title'] = $district.' - Student PreSurvey Status';
 			$res = $this->data_model->getInstitutionsList($district)->result();
-			 
+			
 			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
 			$this->table->set_template($table_setup);
-			$this->table->set_heading(
-								array('data' =>'S.No', 'style'=>'width:50;background-color:#002060; color:#fff'),
+			$set_heading = array(array('data' =>'S.No', 'style'=>'width:50;background-color:#002060; color:#fff'),
 								array('data' =>'UDISE CODE', 'style'=>'width:200;background-color:#002060; color:#fff'),
 								array('data' =>'DISTRICT', 'style'=>'width:200;background-color:#002060; color:#fff'),
 								array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
@@ -776,6 +790,13 @@ class Reports extends CI_Controller {
 								array('data' =>'IDEA SUBMITTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 								array('data' =>'NOT SUBMITTED COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff')
 							);
+			$this->table->set_heading($set_heading);
+			$category = array('data' =>$category, 'style'=>'width:200;background-color:#FF0000; color:#fff');
+			$block = array('data' =>$block, 'style'=>'width:200;background-color:#FF0000; color:#fff');
+			if($instance == "ka"){
+				array_push($set_heading, $category);
+				array_push($set_heading, $block);
+			}
 			$i=1; $total = 0;
 			foreach ($res as $res1){
 				

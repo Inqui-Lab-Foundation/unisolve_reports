@@ -82,7 +82,12 @@ Class Data_model extends CI_Model
  }
 
  function getInstitutionsList($district){
-  $this->db->select('organizations.organization_code, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  $instance = $this->session->userdata('instance');
+  if($instance == 'ka'){
+    $this->db->select('organizations.organization_code, organizations.category, organizations.block_name, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }else{
+    $this->db->select('organizations.organization_code, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }
   $this->db->where('organizations.district', $district);
   $this->db->where('organizations.status', 'ACTIVE');
   return $this->db->get('organizations');
