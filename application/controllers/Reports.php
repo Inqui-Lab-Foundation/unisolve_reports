@@ -549,7 +549,7 @@ class Reports extends CI_Controller {
 		$district = $this->input->post('district');
 		if($district){
 			$data['page_title'] = $district.' - Student PreSurvey Status';
-			$res = $this->data_model->getInstitutionsList($district)->result();
+			$res = $this->data_model->getInstitutionsList1($district)->result();
 		 
 			$instance = $this->session->userdata('instance');
 			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
@@ -1046,6 +1046,114 @@ class Reports extends CI_Controller {
 		}
 		echo $update;
 		echo $new;
+	}
+
+
+	function surveyReprots(){
+		// $instance = $this->session->userdata('instance');
+		$survey_id = 2;
+		$questons = $this->data_model->getQuestions($survey_id)->result();
+		$quesArray = array();
+		foreach($questons as $questons1){
+			array_push($quesArray,$questons1->question);
+		}
+		// $quesArray = array('Congratulations! We are excited to see you begin your problem-solving journey. How are you feeling right now?',
+		// 					'How confident are you talking to new people in your community / surroundings?',
+		// 					'How do you feel about going to school everyday?',
+		// 					'How well do you know about the people and places in your community/ surroundings?',
+		// 					'What do you think about working together in a team to complete a task?',
+		// 					'Did you participate in any online course before?',
+		// 					'Did you participate in any science exhibition or  worked on projects before?',
+		// 					'Do you enjoy working in a team and making your friends feel better?',
+		// 					'Do you enjoy talking to a group of students or giving a speech on stage?',
+		// 					'Are you aware of Sustainable Development Goals?');
+		$res = $this->data_model->getSurveyReports($survey_id)->result();
+		// echo "<pre>";
+		// print_r($questons);die;
+		$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
+		$this->table->set_template($table_setup);
+		$headings = array('No','Student Name');
+		$headings = array_merge($headings,$quesArray);
+		// print_r($quesArray); die;
+		array_push($headings,'Given Date');
+		$this->table->set_heading($headings);
+		
+		$i = 1;
+		foreach($res as $res1){
+			$response = json_decode($res1->response);
+ 
+			$res_array = array($i++,
+			$res1->full_name);
+			foreach($response as $response1){
+				array_push($res_array,$response1->selected_option);	
+			}
+			array_push($res_array,date('d-m-Y h:i A', strtotime($res1->created_at)));	
+			$this->table->add_row($res_array);
+
+			// echo "<br/>";
+		}
+		echo $detailsTable = $this->table->generate();
+		
+		// foreach($challenges as $challenges1){
+			
+		// 	$team = $this->data_model->getDetailsbyfield('team_id', $challenges1->team_id,'challenge_responses')->row();
+		// 	if($team){
+		// 		$update++;
+		// 		$challenge_response_id = $team->challenge_response_id;
+		// 		$updateData = array("challenge_id" =>$challenges1->challenge_id, 
+		// 						"team_id" =>$challenges1->team_id, 
+		// 						"response" =>$challenges1->response, 
+		// 						"initiated_by" =>$challenges1->initiated_by, 
+		// 						"status" =>$challenges1->status, 
+		// 						"created_by" =>$challenges1->created_by, 
+		// 						// "created_at" =>$challenges1->created_at, 
+		// 						"updated_by" =>$challenges1->updated_by, 
+		// 						"updated_at" =>$challenges1->updated_at, 
+		// 						"sdg" =>$challenges1->sdg, 
+		// 						"others" =>$challenges1->others, 
+		// 						"evaluated_by" =>$challenges1->evaluated_by, 
+		// 						"evaluated_at" =>$challenges1->evaluated_at, 
+		// 						"submitted_at" =>$challenges1->submitted_at, 
+		// 						"evaluation_status" =>$challenges1->evaluation_status
+		// 					);
+		// 		$res = $this->data_model->updateDetails($challenge_response_id, $updateData, 'challenge_responses');
+				
+		// 	}else{
+		// 		$new++;
+		// 		$insertData = array("challenge_id" =>$challenges1->challenge_id, 
+		// 						"team_id" =>$challenges1->team_id, 
+		// 						"response" =>$challenges1->response, 
+		// 						"initiated_by" =>$challenges1->initiated_by, 
+		// 						"status" =>$challenges1->status, 
+		// 						"created_by" =>$challenges1->created_by, 
+		// 						"created_at" =>$challenges1->created_at, 
+		// 						"updated_by" =>$challenges1->updated_by, 
+		// 						"updated_at" =>$challenges1->updated_at, 
+		// 						"sdg" =>$challenges1->sdg, 
+		// 						"others" =>$challenges1->others, 
+		// 						"evaluated_by" =>$challenges1->evaluated_by, 
+		// 						"evaluated_at" =>$challenges1->evaluated_at, 
+		// 						"submitted_at" =>$challenges1->submitted_at, 
+		// 						"evaluation_status" =>$challenges1->evaluation_status
+		// 					);
+		// 		$res = $this->data_model->insertDetails('challenge_responses',$insertData);
+				
+		// 	}
+
+
+		// 	// 
+		// 	// // print_r($insertData);
+		// 	// $res = $this->data_model->insertDetails('challenge_responses',$insertData);
+		// 	// $res = $this->data_model->updateDetails(1375, $details, 'challenge_responses');
+		// 	//     if($res) {
+        //     //         echo $challenges1->challenge_response_id." SUCCESS";
+        //     //     }else {
+        //     //         echo $challenges1->challenge_response_id." FAIl";
+        //     //     } 
+		// 	// echo "<br>";
+		// }
+		// echo $update;
+		// echo $new;
 	}
 	 
 	

@@ -95,6 +95,21 @@ Class Data_model extends CI_Model
   return $this->db->get('organizations');
  }
 
+ function getInstitutionsList1($district){
+  $instance = $this->session->userdata('instance');
+  if($instance == 'ka'){
+    $this->db->select('organizations.organization_code, organizations.category, organizations.block_name, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }else if($instance == 'ts'){
+    $this->db->select('organizations.organization_code, organizations.district, organizations.org_type, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }else{
+    $this->db->select('organizations.organization_code, organizations.district, organizations.organization_name, organizations.principal_name, organizations.principal_mobile, organizations.principal_email');
+  }
+  $this->db->join('mentors', 'mentors.organization_code = organizations.organization_code');
+  $this->db->where('organizations.district', $district);
+  $this->db->where('organizations.status', 'ACTIVE');
+  return $this->db->get('organizations');
+ }
+
  function getTeamsCount($mentor_id){
   $this->db->select('count(team_id) as count');
   $this->db->where('mentor_id', $mentor_id);
@@ -733,6 +748,19 @@ Class Data_model extends CI_Model
       $this->db->where('current_year',$year);
       $this->db->where('reg_no',$reg_no);
       return $this->db->get('fees'); 
+    }
+
+    function getSurveyReports($id){
+      $this->db->where('quiz_survey_id',$id);
+      $this->db->join('users', 'quiz_survey_responses.user_id = users.user_id');
+      $this->db->limit(500);
+      $this->db->order_by('rand()');
+      return $this->db->get('quiz_survey_responses'); 
+    }
+
+    function getQuestions($id){
+      $this->db->where('quiz_survey_id',$id);
+      return $this->db->get('quiz_survey_questions'); 
     }
 
 }
