@@ -775,6 +775,261 @@ class Reports extends CI_Controller {
 		}
 	}
 
+
+	function studentProgress(){
+		$district = $this->input->post('district');
+		if($district){
+			$data['page_title'] = $district.' - Student Progress Status';
+			$res = $this->data_model->studentProgress($district)->result();
+		 
+			$instance = $this->session->userdata('instance');
+			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
+			$this->table->set_template($table_setup);
+
+			$set_heading = array(
+								array('data' =>'S.No', 'style'=>'width:50;background-color:#002060; color:#fff'),
+								array('data' =>'UDISE CODE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
+								array('data' =>'DISTRICT', 'style'=>'width:300;background-color:#002060; color:#fff')
+							);
+
+			// if($instance == "ka"){
+			// 	array_push($set_heading, array('data' =>'CATEGORY', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+			// 	array_push($set_heading, array('data' =>'BLOCK', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+			// }
+
+			// if($instance == "ts"){
+			// 	array_push($set_heading, array('data' =>'ORG TYPE', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+			// }
+			 
+			$set_heading1 = array(
+				// array('data' =>'HM NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				// array('data' =>'HM MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+				array('data' =>'TEACHER NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+				array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'TEAM NAME', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'STUDENT NAME', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'COURSE COMPLETION %', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'COURSE STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				array('data' =>'IDEA STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff')
+				// array('data' =>'IN PROGRESS COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				// array('data' =>'NOT STARTED COUNT', 'style'=>'width:200;background-color:#37474F; color:#fff'),
+				// array('data' =>'IDEAS SUBMISSION STATUS', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				// array('data' =>'IDEAS SUBMITTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				// array('data' =>'IDEAS DRAFT COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff'),
+				// array('data' =>'IDEAS NOT STARTED COUNT', 'style'=>'width:200;background-color:#5D4037; color:#fff')
+			);
+			$set_heading = array_merge($set_heading, $set_heading1);
+			$this->table->set_heading($set_heading);
+			$i=1; $total = 0;
+			foreach ($res as $res1){
+				
+				// $teacher = $this->data_model->getTeacherDetails($res1->organization_code)->row();
+				// if($teacher){
+				// 	$mentor_id = $teacher->mentor_id;
+				// 	$user_id = $teacher->user_id;
+
+				// 	$teacher_name = array('data' => $teacher->full_name);
+				// 	$mobile = array('data' => $teacher->mobile);
+				// 	$email = array('data' => $teacher->username);
+										 
+				// 	// // TEAMS COUNT
+				// 	// $getTeamsCount = $this->data_model->getTeamsCount($mentor_id)->row();
+				// 	// if($getTeamsCount){
+				// 	// 	if($getTeamsCount->count){
+				// 	// 		$teams_count = $getTeamsCount->count;
+							
+				// 	// 		// IDEAS STATUS
+				// 	// 		$ideas_res = $this->data_model->getIdeasCount($mentor_id)->result();
+				// 	// 		$ideas_draft = 0; $ideas_submitted = 0;
+				// 	// 		foreach($ideas_res as $ideas_res1){
+				// 	// 			if($ideas_res1->status == "DRAFT"){
+				// 	// 				$ideas_draft = $ideas_res1->count;
+				// 	// 			}
+				// 	// 			if($ideas_res1->status == "SUBMITTED"){
+				// 	// 				$ideas_submitted = $ideas_res1->count;
+				// 	// 			}
+				// 	// 		}
+				// 	// 		$ideas_not_started = $teams_count - ($ideas_draft + $ideas_submitted);
+				// 	// 		if($teams_count == $ideas_submitted){								
+				// 	// 			$ideas_status = array('data' => "COMPLETED 🟢",'style'=>'background-color:#4CAF50; color:#000');
+				// 	// 		}else{
+				// 	// 			$ideas_status = array('data' => "IN PROGRESS 🟡",'style'=>'background-color:#FFF176; color:#000');
+				// 	// 		}
+
+				// 	// 	}else{
+				// 	// 		$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');	
+				// 	// 		$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 		$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 		$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 		$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	}
+				// 	// }else{
+				// 	// 	$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// }
+
+				// 	// // STUDENTS COUNT
+				// 	// $getStudentsCount = $this->data_model->getStudentsCount($mentor_id)->row();
+				// 	// if($getStudentsCount){
+				// 	// 	if($getStudentsCount->count){
+				// 	// 		$students_count = $getStudentsCount->count;
+				// 	// 		$students_count1 = $getStudentsCount->count;
+				// 	// 	}else{
+				// 	// 		$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');	
+				// 	// 		$students_count1 = 0;
+				// 	// 	}
+				// 	// }else{
+				// 	// 	$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$students_count1 = 0;
+				// 	// }
+
+				// 	// // STUDENTS PRE SURVEY COUNT
+				// 	// $getStudentsLessonsCount = $this->data_model->getStudentsLessonsCount($mentor_id)->result();
+				// 	// if($getStudentsLessonsCount){
+				// 	// 	$started = count($getStudentsLessonsCount);
+				// 	// 	$not_started = $students_count1 - $started;
+				// 	// 	$completed = 0; $inprogress = 0; 
+				// 	// 	foreach($getStudentsLessonsCount as $getStudentsLessonsCount1){
+				// 	// 		if($getStudentsLessonsCount1->count == 35){
+				// 	// 			$completed++;
+				// 	// 		}else{
+				// 	// 			$inprogress++;
+				// 	// 		}
+				// 	// 	}
+				// 	// 		if($students_count1 == $completed){
+				// 	// 			$lessons_status = array('data' => "COMPLETED 🟢",'style'=>'background-color:#4CAF50; color:#000');
+				// 	// 		}else{
+				// 	// 			$lessons_status = array('data' => "IN PROGRESS 🟡",'style'=>'background-color:#FFF176; color:#000');
+				// 	// 		}
+						
+				// 	// 	if($completed){
+				// 	// 		$lessons_completed_count = array('data' => $completed);
+				// 	// 	}else{
+				// 	// 		$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	}
+
+				// 	// 	if($inprogress){
+				// 	// 		$lessons_in_progress_count = array('data' => $inprogress);
+				// 	// 	}else{
+				// 	// 		$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	}
+						
+				// 	// 	if($not_started){
+				// 	// 		$lessons_not_started_count = array('data' => $not_started);
+				// 	// 	}else{
+				// 	// 		$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	}
+
+				// 	// }else{
+												
+				// 	// 	$lessons_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	if($students_count1){
+				// 	// 		$lessons_not_started_count = array('data' => $students_count1);
+				// 	// 	}else{
+				// 	// 		$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	// 	}
+						
+				// 	// }
+
+					
+					
+				// }else{
+				// 	// $teacher_name = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
+				// 	// $mobile = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
+				// 	// $email = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
+				// 	// $teams_count = array('data' => 0,'style'=>'background-color:#F4511E; color:#000');
+				// 	// $students_count = array('data' => 0,'style'=>'background-color:#F4511E; color:#000');
+				// 	// $lessons_status = array('data' => "NOT REGISTERED",'style'=>'background-color:#F4511E; color:#000');
+				// 	// $lessons_completed_count = array('data' => 0);
+				// 	// $lessons_in_progress_count = array('data' => 0);
+				// 	// $lessons_not_started_count = array('data' => 0);
+
+				// 	$teacher_name = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$mobile = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$email = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$lessons_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$lessons_completed_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$lessons_in_progress_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$lessons_not_started_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$ideas_status = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$ideas_submitted = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$ideas_draft = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// 	$ideas_not_started = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
+				// }
+				
+				// $principal_name = ($res1->principal_name) ? $res1->principal_name : $res1->organization_name;
+				// $principal_mobile = ($res1->principal_mobile) ? $res1->principal_mobile : 0;
+
+				$add_row = array($i++,$res1->organization_code);
+				// if($instance == 'ka'){
+				// 	array_push($add_row, $res1->category);
+				// 	array_push($add_row, $res1->block_name);
+				// }
+				// if($instance == 'ts'){
+				// 	array_push($add_row, $res1->org_type);
+				// }
+				$per = number_format(($res1->course_status / 35) * 100,0);
+				if($res1->course_status == 35){
+					$course_status = array('data' => "COMPLETED",'style'=>'color:#4CAF50');
+				}else if($res1->course_status == 0){
+					$course_status = array('data' => "NOT STARTED",'style'=>'color:#F4511E');
+				}else{
+					$course_status = array('data' => "IN PROGRESS",'style'=>'color:#5179d6');
+				}
+				
+
+				if($res1->idea_status == "SUBMITTED"){
+					$idea_status = array('data' => "SUBMITTED",'style'=>'color:#4CAF50');
+				}else if($res1->idea_status == "DRAFT"){
+					$idea_status = array('data' => "DRAFT",'style'=>'color:#5179d6');
+				}else{
+					$idea_status = array('data' => "NOT INITIATED",'style'=>'color:#F4511E');
+				}
+				$add_other_fields = array($res1->organization_name,
+										$district,
+										$res1->city,
+										$res1->mobile,
+										$res1->username,
+										$res1->team_name,
+										$res1->full_name,
+										$per.'%',
+										$course_status,
+										$idea_status
+										// $teams_count,
+										// $students_count,
+										// $lessons_status,
+										// $lessons_completed_count,
+										// $lessons_in_progress_count,
+										// $lessons_not_started_count,
+										// $ideas_status,
+										// $ideas_submitted,
+										// $ideas_draft,
+										// $ideas_not_started
+									);
+				$add_row = array_merge($add_row, $add_other_fields);
+				$this->table->add_row($add_row);
+			}
+			
+			$detailsTable = $this->table->generate();
+			$response =  array('op' => 'ok',
+                 'file' => "data:application/vnd.ms-excel;base64,".base64_encode($detailsTable)
+                 );
+            die(json_encode($response));
+		}else{
+			redirect('reports/index');
+		}
+	}
+
+
 	function studentIdeas(){
 		$district = $this->input->post('district');
 		if($district){
@@ -983,7 +1238,11 @@ class Reports extends CI_Controller {
 	}
 
 	function testOrg(){
-		
+		$mentor_id = 96;
+		$ideas_res = $this->data_model->getIdeasCount($mentor_id)->result();
+		echo $this->db->last_query();
+		print_r($ideas_res); 
+		die;
 		$challenges = $this->data_model->getDetails('organizations', null)->result();
 		$update = 0; $new = 0;
 		foreach($challenges as $challenges1){
@@ -1156,5 +1415,6 @@ class Reports extends CI_Controller {
 		// echo $new;
 	}
 	 
+	
 	
 }

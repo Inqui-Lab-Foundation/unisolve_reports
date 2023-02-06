@@ -37,7 +37,8 @@
                                         echo "<td><button type='button' name='teachersStatus_btn_".$i."' id='teachersStatus_btn' value='".$res1->district."' class='teachersStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         // echo "<td>".anchor('reports/studentPreSurvey/'.$res1->district,'Download','class="btn btn-danger btn-xs"')."</td>";
                                         echo "<td><button type='button' name='studentsPreSurvey_btn_".$i."' id='studentsPreSurvey_btn' value='".$res1->district."' class='studentsPreSurvey_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
-                                        echo "<td><button type='button' name='studentLessonsStatus_btn_".$i."' id='studentLessonsStatus_btn' value='".$res1->district."' class='studentLessonsStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
+                                        echo "<td><button type='button' name='studentLessonsStatus_btn_".$i."' id='studentLessonsStatus_btn' value='".$res1->district."' class='studentLessonsStatus_btn btn btn-danger btn-xs mx-2'><i class='fa fa-download'></i> Download</button>";
+                                        echo "<button type='button' name='studentDetailedStatus_btn_".$i."' id='studentDetailedStatus_btn' value='".$res1->district."' class='studentDetailedStatus_btn btn btn-primary btn-xs mx-2'><i class='fa fa-download'></i> Download</button></td>";
                                         // echo "<td><button type='button' name='studentIdeasStatus_btn_".$i."' id='studentIdeasStatus_btn' value='".$res1->district."' class='studentIdeasStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         echo "</tr>";
 
@@ -169,6 +170,40 @@ $(document).ready(function() {
                 'success': function(data) {
                     // console.log(data);die;
                     var fileName = district + "_SIDP_Status_" + output + ".xls";
+                    var $a = $("<a>");
+                    $a.attr("href", data.file);
+                    $("body").append($a);
+                    $a.attr("download", fileName);
+                    $a[0].click();
+                    $a.remove();
+                    $("#districts_list").show();
+                    $("#process").hide();
+                    // $("#download").attr("disabled", false);
+                }
+            });
+
+        }
+    });
+
+    $('button[class^="studentDetailedStatus_btn"]').click(function() {
+        var district = $(this).attr('value');
+
+        if (district) {
+            $("#districts_list").hide();
+            $("#process").show();
+
+            var page = base_url + 'reports/studentProgress';
+            $.ajax({
+                'type': 'POST',
+                'url': page,
+                'data': {
+                    'district': district
+                },
+                'dataType': 'json',
+                'cache': false,
+                'success': function(data) {
+                    // console.log(data);die;
+                    var fileName = district + "_Progress_Status_" + output + ".xls";
                     var $a = $("<a>");
                     $a.attr("href", data.file);
                     $("body").append($a);

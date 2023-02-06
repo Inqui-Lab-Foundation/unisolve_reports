@@ -467,6 +467,35 @@ Class Data_model extends CI_Model
       return $this->db->query("SELECT staff_details.id, staff_details.staff_name FROM staff_details WHERE NOT EXISTS (SELECT subjects_staff.staff_id FROM subjects_staff WHERE subjects_staff.subject_id = '".$subject_id."' AND staff_details.id = subjects_staff.staff_id)");
   }
   
+  function studentProgress($district){
+    return $this->db->query("SELECT 
+      org.organization_code,
+      org.organization_name,
+      org.district,
+      org.city,
+      users.username,
+      men.mobile,
+      team.team_name,
+      student.full_name,
+      student.user_id,
+      (SELECT count(course_topic_id) FROM user_topic_progress  as utp where utp.user_id = student.user_id) as course_status,
+      idea.status as idea_status
+  FROM
+      mentors AS men
+          LEFT OUTER JOIN
+      organizations AS org ON men.organization_code = org.organization_code
+          LEFT OUTER JOIN
+      users AS users ON men.user_id = users.user_id
+          LEFT OUTER JOIN
+      teams AS team ON men.mentor_id = team.mentor_id
+          LEFT OUTER JOIN
+      students AS student ON team.team_id = student.team_id
+          LEFT OUTER JOIN
+      challenge_responses AS idea ON team.team_id = idea.team_id
+  WHERE
+      org.status = 'ACTIVE' and org.district = '$district'");
+}
+
   function assignedStudents($ss_id){
     $this->db->select('subjects_staff_students.id, subjects_staff_students.ss_id, subjects_staff_students.student_id, students.admission_no,students.reg_no, students.student_name');
     $this->db->join('students', 'students.id = subjects_staff_students.student_id');
