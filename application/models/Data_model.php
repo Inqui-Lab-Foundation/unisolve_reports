@@ -474,9 +474,10 @@ Class Data_model extends CI_Model
       org.district,
       org.city,
       users.username,
+      men.full_name as mentor_name,
       men.mobile,
       team.team_name,
-      student.full_name,
+      student.full_name as student_name,
       student.user_id,
       (SELECT count(course_topic_id) FROM user_topic_progress  as utp where utp.user_id = student.user_id) as course_status,
       idea.status as idea_status

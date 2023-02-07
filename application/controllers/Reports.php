@@ -996,11 +996,11 @@ class Reports extends CI_Controller {
 				}
 				$add_other_fields = array($res1->organization_name,
 										$district,
-										$res1->city,
+										$res1->mentor_name,
 										$res1->mobile,
 										$res1->username,
 										$res1->team_name,
-										$res1->full_name,
+										$res1->student_name,
 										$per.'%',
 										$course_status,
 										$idea_status
