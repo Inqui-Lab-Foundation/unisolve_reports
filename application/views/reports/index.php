@@ -46,14 +46,14 @@
                         <img src="assets/img/bhtn.png">
                     </div>
                 </a>
-            </div>
+            </div>-->
             <div class="col-md-4 col-sm-6 mb-4">
                 <a href="<?="reports/setInstance/mldv"?>">
                     <div class="box card shadow position-relative p-3">
                         <img src="assets/img/mldv.png">
                     </div>
                 </a>
-            </div> -->
+            </div> 
         </div>
     </div>
 </main>
