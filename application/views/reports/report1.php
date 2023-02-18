@@ -37,7 +37,8 @@
                                         echo "<td><button type='button' name='teachersStatus_btn_".$i."' id='teachersStatus_btn' value='".$res1->district."' class='teachersStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         // echo "<td>".anchor('reports/studentPreSurvey/'.$res1->district,'Download','class="btn btn-danger btn-xs"')."</td>";
                                         echo "<td><button type='button' name='studentsPreSurvey_btn_".$i."' id='studentsPreSurvey_btn' value='".$res1->district."' class='studentsPreSurvey_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
-                                        echo "<td><button type='button' name='studentLessonsStatus_btn_".$i."' id='studentLessonsStatus_btn' value='".$res1->district."' class='studentLessonsStatus_btn btn btn-danger btn-xs mx-2'><i class='fa fa-download'></i> Download</button>";
+                                        echo "<td>";
+                                        // echo "<td><button type='button' name='studentLessonsStatus_btn_".$i."' id='studentLessonsStatus_btn' value='".$res1->district."' class='studentLessonsStatus_btn btn btn-danger btn-xs mx-2'><i class='fa fa-download'></i> Download</button>";
                                         echo "<button type='button' name='studentDetailedStatus_btn_".$i."' id='studentDetailedStatus_btn' value='".$res1->district."' class='studentDetailedStatus_btn btn btn-primary btn-xs mx-2'><i class='fa fa-download'></i> Download</button></td>";
                                         // echo "<td><button type='button' name='studentIdeasStatus_btn_".$i."' id='studentIdeasStatus_btn' value='".$res1->district."' class='studentIdeasStatus_btn btn btn-danger btn-xs'><i class='fa fa-download'></i> Download</button></td>";
                                         echo "</tr>";
