@@ -799,7 +799,7 @@ class Reports extends CI_Controller {
 			}
 
 			if($instance == "ts"){
-				array_push($set_heading, array('data' =>'ORG TYPE', 'style'=>'width:200;background-color:#FF0000; color:#fff'));
+				array_push($set_heading, array('data' =>'ORG TYPE', 'style'=>'width:200;background-color:#002060; color:#fff'));
 			}
 			 
 			$set_heading1 = array(
@@ -810,6 +810,9 @@ class Reports extends CI_Controller {
 				array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
 				array('data' =>'TEAM NAME', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 				array('data' =>'STUDENT NAME', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'AGE', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'GENDER', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
+				array('data' =>'GRADE', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 				array('data' =>'COURSE COMPLETION %', 'style'=>'width:200;background-color:#37474F; color:#fff'),
 				array('data' =>'COURSE STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
 				array('data' =>'IDEA STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff')
@@ -854,6 +857,9 @@ class Reports extends CI_Controller {
 										$res1->username,
 										$res1->team_name,
 										$res1->student_name,
+										$res1->Age,
+										$res1->Gender,
+										$res1->Grade,
 										$per.'%',
 										$course_status,
 										$idea_status

@@ -484,6 +484,9 @@ Class Data_model extends CI_Model
           team.team_name,
           student.full_name as student_name,
           student.user_id,
+          student.Age,
+          student.Grade,
+          student.Gender,
           (SELECT count(course_topic_id) FROM user_topic_progress  as utp where utp.user_id = student.user_id) as course_status,
           idea.status as idea_status
       FROM
@@ -514,6 +517,9 @@ Class Data_model extends CI_Model
           team.team_name,
           student.full_name as student_name,
           student.user_id,
+          student.Age,
+          student.Grade,
+          student.Gender,
           (SELECT count(course_topic_id) FROM user_topic_progress  as utp where utp.user_id = student.user_id) as course_status,
           idea.status as idea_status
       FROM
