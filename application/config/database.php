@@ -170,12 +170,12 @@ $db['ka'] = array(
 	'save_queries' => TRUE
 );
 
-// KARNATAKA
+// BHUTAN
 $db['bhtn'] = array(
 	'dsn'	=> '',
-	'hostname' => 'ka-prod-db.cluster-ro-chmvurkvqofo.ap-south-1.rds.amazonaws.com',
-	'username' => 'dbmasteruser',
-	'password' => 'nPfTB2S6MgjPupRaxyDN',
+	'hostname' => 'bhtn-prod.cluster-cvuyvdrglefz.ap-south-1.rds.amazonaws.com',
+	'username' => 'admin',
+	'password' => 'Y5bNuDnmXifm8aclvLdP',
 	'database' => 'unisolve_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

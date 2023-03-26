@@ -530,6 +530,150 @@ class Reports extends CI_Controller {
 		}
 	}
 
+	function studentPreSurveyDetail(){
+			$data['page_title'] = 'Student PreSurvey Status';
+			$res = $this->data_model->studentPreSurveyDetail()->result();
+			// echo "<pre>"; 
+			// print_r($res);
+			// die;
+
+			// foreach ($res as $res1){
+			// 	echo $res1->quiz_response_id;
+			// 	echo "<br/>";
+			// 	$response = json_decode($res1->response);
+			// 	// print_r($response);
+			// 	foreach ($response as $response1){
+			// 		print_r($response1);
+			// 	}
+			// 	echo "<br/>";
+			// }
+
+			// die;
+			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
+			$this->table->set_template($table_setup);
+
+			// STUDENT PRE SURVEY
+			// array('data' =>'Congratulations! We are excited to see you begin your problem-solving journey. How are you feeling right now?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'How confident are you talking to new people in your community / surroundings?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'How do you feel about going to school everyday?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'How well do you know about the people and places in your community/ surroundings?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'What do you think about working together in a team to complete a task?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'Did you participate in any online course before?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'Did you participate in any science exhibition or  worked on projects before?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'Do you enjoy working in a team and making your friends feel better?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'Do you enjoy talking to a group of students or giving a speech on stage? ', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+			// array('data' =>'Are you aware of Sustainable Development Goals?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+
+			$this->table->set_heading(
+								array('data' =>'S.No', 'style'=>'width:50;background-color:#002060; color:#fff'),
+								array('data' =>'UDISE CODE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'DISTRICT', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'SCHOOL NAME', 'style'=>'width:600;background-color:#002060; color:#fff'),
+								array('data' =>'STUDENT NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
+								array('data' =>'LOGIN ID', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'AGE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'GRADE', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'GENDER', 'style'=>'width:200;background-color:#002060; color:#fff'),
+								array('data' =>'Congratulations! We hope you had a great time all along your problem-solving journey. How was your experience so far?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Do you feel confident about talking to new people in your community/ surroundings after your problem-solving journey?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Did this program make going to school everyday more exciting for you?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Which parts of the on-line journey did you like the most?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Which parts of the on-line journey did you not like or found it difficult?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'What were the most exciting parts of the off-line problem-solving journey for you and your team ?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'What were the most exciting parts of the off-line problem-solving journey for you and your team ?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Which was the most difficult part of the offline problem-solving journe for you?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'Would you like to work on solving more problems in the future?', 'style'=>'width:500;background-color:#FF0000; color:#fff'),
+								array('data' =>'GIVEN DATE', 'style'=>'width:200;background-color:#FF0000; color:#fff')
+							);
+			$i=1; $total = 0;
+			foreach ($res as $res1){
+				
+				$organization_code = array('data' => $res1->organization_code);
+				$district = array('data' => $res1->district);
+				$organization_name = array('data' => $res1->organization_name);
+
+				$full_name = array('data' => $res1->full_name);
+				$username = array('data' => $res1->username);
+				$Age = array('data' => $res1->Age);
+				$Grade =  array('data' => $res1->Grade);
+				$Gender = array('data' => $res1->Gender);
+
+				$given_date = array('data' => date('d-m-Y h:i A', strtotime($res1->created_at)));
+				$response = json_decode($res1->response);
+				$ans1 = '-'; $ans2 = '-'; $ans3 = '-'; $ans4 = '-'; $ans5 = '-'; $ans6 = '-'; $ans7 = '-'; $ans8 = '-'; $ans9 = '-'; $ans10 = '-';
+				foreach($response as $response1){
+
+					if($response1->question_no ==  1){
+						$ans1 = $response1->selected_option;
+					}
+					if($response1->question_no ==  2){
+						$ans2 = $response1->selected_option;
+					}
+					if($response1->question_no ==  3){
+						$ans3 = $response1->selected_option;
+					}
+					if($response1->question_no ==  4){
+						$ans4 = $response1->selected_option;
+					}
+					if($response1->question_no ==  5){
+						$ans5 = $response1->selected_option;
+					}
+					if($response1->question_no ==  6){
+						$ans6 = $response1->selected_option;
+					}
+					if($response1->question_no ==  7){
+						$ans7 = $response1->selected_option;
+					}
+					if($response1->question_no ==  8){
+						$ans8 = $response1->selected_option;
+					}
+					if($response1->question_no ==  9){
+						$ans9 = $response1->selected_option;
+					}
+					// if($response1->question_no ==  10){
+					// 	$ans10 = $response1->selected_option;
+					// }
+					
+				}
+				$this->table->add_row($i++,
+									$organization_code,
+									$district,
+									$organization_name,
+									$full_name,
+									$username,
+									$Age,
+									$Grade,
+									$Gender,
+									$ans1,
+									$ans2,
+									$ans3,
+									$ans4,
+									$ans5,
+									$ans6,
+									$ans7,
+									$ans8,
+									$ans9,
+									$given_date,
+									 
+								);
+						 
+			}
+			
+			$detailsTable = $this->table->generate();
+			$file_name = "Student Post Survey Details.xls";
+    			header('Content-Disposition: attachment; filename='.$file_name.'');
+		        header('Content-type: application/force-download');
+			    header('Content-Transfer-Encoding: binary');
+			    header('Pragma: public');
+			    print "\xEF\xBB\xBF"; // UTF-8 BOM
+			    echo $detailsTable;
+			// $response =  array('op' => 'ok',
+            //      'file' => "data:application/vnd.ms-excel;base64,".base64_encode($detailsTable)
+            //      );
+            // die(json_encode($response));
+		 
+	}
+
 	function studentLessons(){
 		// $mentor_id = 4208;
 		// $ideas_res = $this->data_model->getIdeasCount($mentor_id)->result();
