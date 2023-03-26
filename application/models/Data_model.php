@@ -879,5 +879,47 @@ Class Data_model extends CI_Model
       return $this->db->get('quiz_survey_responses'); 
     }
 
+    // SUMMARY REPORTS
+
+    function totalRegisteredStudents(){
+      $this->db->select('COUNT(students.student_id) AS TotalStudents');
+      $this->db->join('teams', 'students.team_id = teams.team_id');
+      $this->db->join('mentors', 'mentors.mentor_id = teams.mentor_id');
+      $this->db->join('organizations', 'mentors.organization_code = organizations.organization_code');
+      $this->db->where('organizations.status','ACTIVE');
+      return $this->db->get('students'); 
+    }
+
+    function studentsParms($param){
+      if($param == "Age"){
+        $this->db->select('students.Age, COUNT(students.student_id) AS TotalStudents');  
+      }
+      if($param == "Gender"){
+        $this->db->select('students.Gender, COUNT(students.student_id) AS TotalStudents');  
+      }
+      if($param == "Grade"){
+        $this->db->select('students.Grade, COUNT(students.student_id) AS TotalStudents');  
+      }
+      $this->db->select('COUNT(students.student_id) AS TotalStudents');
+      $this->db->join('teams', 'students.team_id = teams.team_id');
+      $this->db->join('mentors', 'mentors.mentor_id = teams.mentor_id');
+      $this->db->join('organizations', 'mentors.organization_code = organizations.organization_code');
+      $this->db->where('organizations.status','ACTIVE');
+      if($param == "Age"){
+        $this->db->order_by('students.Age', 'ASC');
+        $this->db->group_by('students.Age');
+      }
+      if($param == "Gender"){
+        $this->db->order_by('students.Gender', 'ASC');
+        $this->db->group_by('students.Gender');
+      }
+      if($param == "Grade"){
+        $this->db->order_by('students.Grade', 'ASC');
+        $this->db->group_by('students.Grade');
+      }
+      return $this->db->get('students'); 
+    }
+
+ 
 }
 ?>

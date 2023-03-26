@@ -10,6 +10,9 @@
                 <div class="block shadow block-bordered">
                     <div class="block-header block-header-default">
                         <h3 class="block-title"><?=$instances[$instance].' '.$page_title;?></h3>
+                        <div class="block-options">
+                            <?php echo anchor('reports/instanceHome','<i class="fas fa-arrow-left"></i> Back to Summary','class="btn btn-sm btn-dark"'); ?>
+                        </div>
                     </div>
                     <div class="block-content">
                         <div id="districts_list">

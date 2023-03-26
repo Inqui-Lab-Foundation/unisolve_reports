@@ -112,6 +112,30 @@ class Reports extends CI_Controller {
 			$data['instance'] = $this->session->userdata('instance');
 			
 			$data['page_title'] = 'Dashboard';		 
+			$data['instances'] = array(" " => "") + $this->globals->instances();
+			$data['instancesLive'] = array(" " => "") + $this->globals->instancesLive();
+
+
+			$data['totalRegisteredStudents'] = $this->data_model->totalRegisteredStudents()->row();
+
+			$data['studentsAge'] = $this->data_model->studentsParms('Age')->result();
+
+			$data['studentsGrade'] = $this->data_model->studentsParms('Grade')->result();
+
+			$data['studentsGender'] = $this->data_model->studentsParms('Gender')->result();
+
+			$this->reports_template->show('reports/summary',$data);
+
+		}else {
+			redirect('reports');
+		}
+	}
+
+	function reportsList(){
+		if ($this->session->userdata('instance')){
+			$data['instance'] = $this->session->userdata('instance');
+			
+			$data['page_title'] = 'Dashboard';		 
 			$data['res'] = $this->data_model->getDistricts()->result();
 
 			$data['instances'] = array(" " => "") + $this->globals->instances();
