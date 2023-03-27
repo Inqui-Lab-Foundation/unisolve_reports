@@ -64,8 +64,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="block block-rounded block-bordered block-themed">
                                     <div class="block-header bg-modern">
                                         <h3 class="block-title"> GENDER WISE ENROLLED STUDENTS</h3>
