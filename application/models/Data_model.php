@@ -866,16 +866,37 @@ Class Data_model extends CI_Model
       $this->db->where('quiz_survey_id',$id);
       return $this->db->get('quiz_survey_questions'); 
     }
-    function studentPreSurveyDetail(){
+    function studentPreSurveyDetail($survey_id){
+      $this->db->select('quiz_survey_responses.quiz_response_id, quiz_survey_responses.user_id, users.username, users.full_name, organizations.organization_code, organizations.district, organizations.organization_name, students.team_id, students.Age, students.Gender, students.Grade, quiz_survey_responses.quiz_survey_id, quiz_survey_responses.response, quiz_survey_responses.created_at');
+      $this->db->join('users', 'quiz_survey_responses.user_id = users.user_id');
+      $this->db->join('students', 'quiz_survey_responses.user_id = students.user_id');
+      $this->db->join('teams', 'teams.team_id = students.team_id');
+      $this->db->join('mentors', 'mentors.mentor_id = teams.mentor_id');
+      $this->db->join('organizations', 'organizations.organization_code = mentors.organization_code');
+      $this->db->where('quiz_survey_id',$survey_id);
+      $this->db->order_by('quiz_response_id');
+      // $this->db->limit(100, 1);
+      return $this->db->get('quiz_survey_responses'); 
+    }
+
+    function getOrgDetails($team_id){
+      $this->db->select('organizations.organization_code, organizations.district, organizations.organization_name');
+      $this->db->join('teams', 'teams.team_id = '.$team_id);
+      $this->db->join('mentors', 'mentors.mentor_id = teams.mentor_id');
+      $this->db->where('organizations.organization_code = mentors.organization_code');
+      return $this->db->get('organizations'); 
+    }
+
+    function studentPreSurveyDetail1($survey_id){
       $this->db->select('quiz_survey_responses.quiz_response_id, quiz_survey_responses.user_id, users.username, users.full_name, organizations.organization_code, organizations.district, organizations.organization_name, students.team_id, students.Age, students.Gender, students.Grade, quiz_survey_responses.quiz_survey_id, quiz_survey_responses.response, quiz_survey_responses.created_at');
       $this->db->join('users', 'quiz_survey_responses.user_id = users.user_id');
       $this->db->join('students', 'quiz_survey_responses.user_id = students.user_id');
       $this->db->join('teams', 'teams.team_id = students.team_id');
       $this->db->join('mentors', 'mentors.user_id = teams.mentor_id');
       $this->db->join('organizations', 'organizations.organization_code = mentors.organization_code');
-      $this->db->where('quiz_survey_id','4');
+      $this->db->where('quiz_survey_id',$survey_id);
       $this->db->order_by('quiz_response_id');
-      $this->db->limit(10000, 60001);
+      // $this->db->limit(10000, 1);
       return $this->db->get('quiz_survey_responses'); 
     }
 

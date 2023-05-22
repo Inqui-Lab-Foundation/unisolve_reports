@@ -554,9 +554,12 @@ class Reports extends CI_Controller {
 		}
 	}
 
-	function studentPreSurveyDetail(){
+	function studentSurveyDetail(){
+		ini_set('memory_limit', '-1');
 			$data['page_title'] = 'Student PreSurvey Status';
-			$res = $this->data_model->studentPreSurveyDetail()->result();
+			$survey_id = 4;
+			$res = $this->data_model->studentPreSurveyDetail($survey_id)->result();
+			// echo $this->db->last_query();
 			// echo "<pre>"; 
 			// print_r($res);
 			// die;
@@ -612,15 +615,30 @@ class Reports extends CI_Controller {
 			$i=1; $total = 0;
 			foreach ($res as $res1){
 				
-				$organization_code = array('data' => $res1->organization_code);
-				$district = array('data' => $res1->district);
-				$organization_name = array('data' => $res1->organization_name);
+				// $organization_code = array('data' => $res1->organization_code);
+				// $district = array('data' => $res1->district);
+				// $organization_name = array('data' => $res1->organization_name);
 
 				$full_name = array('data' => $res1->full_name);
 				$username = array('data' => $res1->username);
 				$Age = array('data' => $res1->Age);
 				$Grade =  array('data' => $res1->Grade);
 				$Gender = array('data' => $res1->Gender);
+				$team_id = $res1->team_id;
+				$organization_code = array('data' => $res1->organization_code);	
+				$district = array('data' => $res1->district);
+				$organization_name = array('data' => $res1->organization_name);
+				 
+				// if($orgDetails){
+				// 	$organization_code = array('data' => $orgDetails->organization_code);	
+				// 	$district = array('data' => $orgDetails->district);
+				// 	$organization_name = array('data' => $orgDetails->organization_name);
+				// }else{
+				// 	$organization_code = "";
+				// 	$district = "";
+				// 	$organization_name = "";
+				// }
+				
 
 				$given_date = array('data' => date('d-m-Y h:i A', strtotime($res1->created_at)));
 				$response = json_decode($res1->response);
@@ -677,6 +695,7 @@ class Reports extends CI_Controller {
 									$ans7,
 									$ans8,
 									$ans9,
+									// $ans10,
 									$given_date,
 									 
 								);
@@ -950,6 +969,8 @@ class Reports extends CI_Controller {
 			$data['page_title'] = $district.' - Student Progress Status';
 			$instance = $this->session->userdata('instance');
 			$res = $this->data_model->studentProgress($district, $instance)->result();
+
+			// echo "<pre>"; print_r($res); die;
 		 
 			$table_setup = array ('table_open'=> '<table class="table table-striped table-vcenter table-hover js-dataTable-full font-size-sm"  border="1">');    
 			$this->table->set_template($table_setup);
@@ -995,55 +1016,57 @@ class Reports extends CI_Controller {
 			$this->table->set_heading($set_heading);
 			$i=1; $total = 0;
 			foreach ($res as $res1){
-				$add_row = array($i++,$res1->organization_code,$res1->organization_name,$district);
-				if($instance == 'ka'){
-					array_push($add_row, $res1->category);
-					array_push($add_row, $res1->block_name);
+				if($res1->user_id){
+					$add_row = array($i++,$res1->organization_code,$res1->organization_name,$district);
+					if($instance == 'ka'){
+						array_push($add_row, $res1->category);
+						array_push($add_row, $res1->block_name);
+					}
+					if($instance == 'ts'){
+						array_push($add_row, $res1->org_type);
+					}
+					$per = number_format(($res1->course_status / 35) * 100,0);
+					if($res1->course_status == 35){
+						$course_status = array('data' => "COMPLETED",'style'=>'color:#4CAF50');
+					}else if($res1->course_status == 0){
+						$course_status = array('data' => "NOT STARTED",'style'=>'color:#F4511E');
+					}else{
+						$course_status = array('data' => "IN PROGRESS",'style'=>'color:#5179d6');
+					}
+					
+	
+					if($res1->idea_status == "SUBMITTED"){
+						$idea_status = array('data' => "SUBMITTED",'style'=>'color:#4CAF50');
+					}else if($res1->idea_status == "DRAFT"){
+						$idea_status = array('data' => "DRAFT",'style'=>'color:#5179d6');
+					}else{
+						$idea_status = array('data' => "NOT INITIATED",'style'=>'color:#F4511E');
+					}
+					$add_other_fields = array($res1->mentor_name,
+											$res1->mobile,
+											$res1->username,
+											$res1->team_name,
+											$res1->student_name,
+											$res1->Age,
+											$res1->Gender,
+											$res1->Grade,
+											$per.'%',
+											$course_status,
+											$idea_status
+											// $teams_count,
+											// $students_count,
+											// $lessons_status,
+											// $lessons_completed_count,
+											// $lessons_in_progress_count,
+											// $lessons_not_started_count,
+											// $ideas_status,
+											// $ideas_submitted,
+											// $ideas_draft,
+											// $ideas_not_started
+										);
+					$add_row = array_merge($add_row, $add_other_fields);
+					$this->table->add_row($add_row);
 				}
-				if($instance == 'ts'){
-					array_push($add_row, $res1->org_type);
-				}
-				$per = number_format(($res1->course_status / 35) * 100,0);
-				if($res1->course_status == 35){
-					$course_status = array('data' => "COMPLETED",'style'=>'color:#4CAF50');
-				}else if($res1->course_status == 0){
-					$course_status = array('data' => "NOT STARTED",'style'=>'color:#F4511E');
-				}else{
-					$course_status = array('data' => "IN PROGRESS",'style'=>'color:#5179d6');
-				}
-				
-
-				if($res1->idea_status == "SUBMITTED"){
-					$idea_status = array('data' => "SUBMITTED",'style'=>'color:#4CAF50');
-				}else if($res1->idea_status == "DRAFT"){
-					$idea_status = array('data' => "DRAFT",'style'=>'color:#5179d6');
-				}else{
-					$idea_status = array('data' => "NOT INITIATED",'style'=>'color:#F4511E');
-				}
-				$add_other_fields = array($res1->mentor_name,
-										$res1->mobile,
-										$res1->username,
-										$res1->team_name,
-										$res1->student_name,
-										$res1->Age,
-										$res1->Gender,
-										$res1->Grade,
-										$per.'%',
-										$course_status,
-										$idea_status
-										// $teams_count,
-										// $students_count,
-										// $lessons_status,
-										// $lessons_completed_count,
-										// $lessons_in_progress_count,
-										// $lessons_not_started_count,
-										// $ideas_status,
-										// $ideas_submitted,
-										// $ideas_draft,
-										// $ideas_not_started
-									);
-				$add_row = array_merge($add_row, $add_other_fields);
-				$this->table->add_row($add_row);
 			}
 			
 			$detailsTable = $this->table->generate();

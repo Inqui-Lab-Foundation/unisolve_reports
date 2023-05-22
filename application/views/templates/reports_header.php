@@ -91,7 +91,7 @@
                 <!-- Right Section -->
                 <div class="d-flex align-items-center">
                     <?php
-                        echo anchor('reports','ALL INSTANCES','class="btn btn-danger btn-sm"');
+                        // echo anchor('reports','ALL INSTANCES','class="btn btn-danger btn-sm"');
                     ?>
 
                     <!-- User Dropdown -->
