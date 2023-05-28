@@ -764,6 +764,7 @@ class Reports extends CI_Controller {
 				array('data' =>'TEACHER NAME', 'style'=>'width:500;background-color:#002060; color:#fff'),
 				array('data' =>'MOBILE', 'style'=>'width:200;background-color:#002060; color:#fff'),
 				array('data' =>'EMAIL', 'style'=>'width:500;background-color:#002060; color:#fff'),
+				array('data' =>'SIDP TEACHER COURSE STATUS', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 				array('data' =>'TEAMS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 				array('data' =>'STUDENTS COUNT', 'style'=>'width:200;background-color:#FF0000; color:#fff'),
 				array('data' =>'STUDENTS STATUS', 'style'=>'width:200;background-color:#37474F; color:#fff'),
@@ -788,7 +789,19 @@ class Reports extends CI_Controller {
 					$teacher_name = array('data' => $teacher->full_name);
 					$mobile = array('data' => $teacher->mobile);
 					$email = array('data' => $teacher->username);
-										 
+					
+					// COURSE STATUS
+					$getTeacherCourseStatus = $this->data_model->getTeacherCourseStatus($user_id)->row();
+					if($getTeacherCourseStatus){
+						if($getTeacherCourseStatus->count == 9){
+							$teacher_course_status = array('data' => 'COMPLETED','style'=>'background-color:#4CAF50; color:#000');
+						}else{
+							$teacher_course_status = array('data' => 'IN PROGRESS','style'=>'background-color:#FFF176; color:#000');
+						}
+					}else{
+						$teacher_course_status = array('data' => 'NOT STARTED','style'=>'background-color:#F4511E; color:#000');
+					}
+
 					// TEAMS COUNT
 					$getTeamsCount = $this->data_model->getTeamsCount($mentor_id)->row();
 					if($getTeamsCount){
@@ -909,6 +922,7 @@ class Reports extends CI_Controller {
 					$teacher_name = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$mobile = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$email = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
+					$teacher_course_status = array('data' => 'NOT REGISTERED 🔴','style'=>'background-color:#F4511E; color:#000');
 					$teams_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$students_count = array('data' => "ZERO 🔴",'style'=>'background-color:#F4511E; color:#000');
 					$lessons_status = array('data' => "NOT REGISTERED 🔴",'style'=>'background-color:#F4511E; color:#000');
@@ -938,6 +952,7 @@ class Reports extends CI_Controller {
 										$teacher_name,
 										$mobile,
 										$email,
+										$teacher_course_status,
 										$teams_count,
 										$students_count,
 										$lessons_status,
