@@ -173,9 +173,9 @@ $db['ka'] = array(
 // BHUTAN
 $db['bhtn'] = array(
 	'dsn'	=> '',
-	'hostname' => 'bhtn-prod.cluster-cvuyvdrglefz.ap-south-1.rds.amazonaws.com',
+	'hostname' => 'bhtn-prod-db.cluster-c2dpyafizmg3.ap-south-1.rds.amazonaws.com',
 	'username' => 'admin',
-	'password' => 'Y5bNuDnmXifm8aclvLdP',
+	'password' => 's*xsUYh4L2RY3J',
 	'database' => 'unisolve_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -196,9 +196,9 @@ $db['bhtn'] = array(
 // MALDIVES
 $db['mldv'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mv-prod-db.cluster-cz2fmmozfusc.ap-south-1.rds.amazonaws.com',
-	'username' => 'dbmaster',
-	'password' => '5ikq0MySN5CrtIi2vFis',
+	'hostname' => 'mldv-prod-db.cluster-c2dpyafizmg3.ap-south-1.rds.amazonaws.com',
+	'username' => 'admin',
+	'password' => 's*xsUYh4L2RY3J',
 	'database' => 'unisolve_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
